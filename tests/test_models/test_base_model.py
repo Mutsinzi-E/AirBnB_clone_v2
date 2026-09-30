@@ -59,6 +59,19 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(model_dict["created_at"], str)
         self.assertIsInstance(model_dict["updated_at"], str)
 
+    def test_to_dict_datetime_values_match_model(self):
+        """Test that to_dict preserves datetime values as ISO strings."""
+        model_dict = self.model.to_dict()
+
+        self.assertEqual(
+            model_dict["created_at"],
+            self.model.created_at.isoformat()
+        )
+        self.assertEqual(
+            model_dict["updated_at"],
+            self.model.updated_at.isoformat()
+        )
+
     def test_to_dict_custom_attributes(self):
         """Test that custom attributes are included."""
         self.model.name = "My_First_Model"
