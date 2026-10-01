@@ -2,6 +2,7 @@
 """Unittest for the Review class."""
 
 import unittest
+from os import getenv
 
 from models.base_model import BaseModel
 from models.review import Review
@@ -24,15 +25,18 @@ class TestReview(unittest.TestCase):
 
     def test_place_id(self):
         """Test place_id."""
-        self.assertEqual(self.review.place_id, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.review.place_id, expected)
 
     def test_user_id(self):
         """Test user_id."""
-        self.assertEqual(self.review.user_id, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.review.user_id, expected)
 
     def test_text(self):
         """Test text."""
-        self.assertEqual(self.review.text, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.review.text, expected)
 
 
 if __name__ == "__main__":

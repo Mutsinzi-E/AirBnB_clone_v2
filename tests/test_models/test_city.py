@@ -2,6 +2,7 @@
 """Unittest for the City class."""
 
 import unittest
+from os import getenv
 
 from models.base_model import BaseModel
 from models.city import City
@@ -24,11 +25,13 @@ class TestCity(unittest.TestCase):
 
     def test_state_id(self):
         """Test state_id."""
-        self.assertEqual(self.city.state_id, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.city.state_id, expected)
 
     def test_name(self):
         """Test name."""
-        self.assertEqual(self.city.name, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.city.name, expected)
 
 
 if __name__ == "__main__":

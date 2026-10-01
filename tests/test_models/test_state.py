@@ -2,6 +2,7 @@
 """Unittest for the State class."""
 
 import unittest
+from os import getenv
 
 from models.base_model import BaseModel
 from models.state import State
@@ -24,7 +25,8 @@ class TestState(unittest.TestCase):
 
     def test_name(self):
         """Test that name exists."""
-        self.assertEqual(self.state.name, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.state.name, expected)
 
 
 if __name__ == "__main__":

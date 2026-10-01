@@ -3,6 +3,7 @@
 
 import unittest
 from datetime import datetime
+from os import getenv
 
 from models.base_model import BaseModel
 
@@ -38,6 +39,10 @@ class TestBaseModel(unittest.TestCase):
         )
         self.assertEqual(str(self.model), expected)
 
+    @unittest.skipIf(
+        getenv("HBNB_TYPE_STORAGE") == "db",
+        "BaseModel is not mapped in DB mode"
+    )
     def test_save_updates_updated_at(self):
         """Test that save updates updated_at."""
         old_updated_at = self.model.updated_at

@@ -2,6 +2,7 @@
 """Unittest for the Place class."""
 
 import unittest
+from os import getenv
 
 from models.base_model import BaseModel
 from models.place import Place
@@ -24,47 +25,60 @@ class TestPlace(unittest.TestCase):
 
     def test_city_id(self):
         """Test city_id."""
-        self.assertEqual(self.place.city_id, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.place.city_id, expected)
 
     def test_user_id(self):
         """Test user_id."""
-        self.assertEqual(self.place.user_id, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.place.user_id, expected)
 
     def test_name(self):
         """Test name."""
-        self.assertEqual(self.place.name, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.place.name, expected)
 
     def test_description(self):
         """Test description."""
-        self.assertEqual(self.place.description, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.place.description, expected)
 
     def test_number_rooms(self):
         """Test number_rooms."""
-        self.assertEqual(self.place.number_rooms, 0)
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else 0
+        self.assertEqual(self.place.number_rooms, expected)
 
     def test_number_bathrooms(self):
         """Test number_bathrooms."""
-        self.assertEqual(self.place.number_bathrooms, 0)
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else 0
+        self.assertEqual(self.place.number_bathrooms, expected)
 
     def test_max_guest(self):
         """Test max_guest."""
-        self.assertEqual(self.place.max_guest, 0)
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else 0
+        self.assertEqual(self.place.max_guest, expected)
 
     def test_price_by_night(self):
         """Test price_by_night."""
-        self.assertEqual(self.place.price_by_night, 0)
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else 0
+        self.assertEqual(self.place.price_by_night, expected)
 
     def test_latitude(self):
         """Test latitude."""
-        self.assertEqual(self.place.latitude, 0.0)
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else 0.0
+        self.assertEqual(self.place.latitude, expected)
 
     def test_longitude(self):
         """Test longitude."""
-        self.assertEqual(self.place.longitude, 0.0)
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else 0.0
+        self.assertEqual(self.place.longitude, expected)
 
     def test_amenity_ids(self):
         """Test amenity_ids."""
-        self.assertEqual(self.place.amenity_ids, [])
+        if getenv("HBNB_TYPE_STORAGE") == "db":
+            self.assertFalse(hasattr(self.place, "amenity_ids"))
+        else:
+            self.assertEqual(self.place.amenity_ids, [])
 
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@
 """Unittest for the User class."""
 
 import unittest
+from os import getenv
 
 from models.user import User
 
@@ -25,19 +26,23 @@ class TestUser(unittest.TestCase):
 
     def test_email_exists(self):
         """Test that email exists."""
-        self.assertEqual(self.user.email, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.user.email, expected)
 
     def test_password_exists(self):
         """Test that password exists."""
-        self.assertEqual(self.user.password, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.user.password, expected)
 
     def test_first_name_exists(self):
         """Test that first_name exists."""
-        self.assertEqual(self.user.first_name, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.user.first_name, expected)
 
     def test_last_name_exists(self):
         """Test that last_name exists."""
-        self.assertEqual(self.user.last_name, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.user.last_name, expected)
 
     def test_unique_ids(self):
         """Test that different Users have different ids."""

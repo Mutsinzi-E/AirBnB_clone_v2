@@ -2,6 +2,7 @@
 """Unittest for the Amenity class."""
 
 import unittest
+from os import getenv
 
 from models.base_model import BaseModel
 from models.amenity import Amenity
@@ -24,7 +25,8 @@ class TestAmenity(unittest.TestCase):
 
     def test_name(self):
         """Test that name exists."""
-        self.assertEqual(self.amenity.name, "")
+        expected = None if getenv("HBNB_TYPE_STORAGE") == "db" else ""
+        self.assertEqual(self.amenity.name, expected)
 
 
 if __name__ == "__main__":
