@@ -10,9 +10,28 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
-        """Return the dictionary of objects."""
-        return self.__objects
+    def all(self, cls=None):
+        """Return the dictionary of objects, optionally filtered by class."""
+        if cls is None:
+            return self.__objects
+
+        filtered_objects = {}
+
+        for key, obj in self.__objects.items():
+            if isinstance(obj, cls):
+                filtered_objects[key] = obj
+
+        return filtered_objects
+
+    def delete(self, obj=None):
+        """Delete an object from storage."""
+        if obj is None:
+            return
+
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+
+        if key in self.__objects:
+            del self.__objects[key]
 
     def new(self, obj):
         """Add an object to the storage dictionary."""
