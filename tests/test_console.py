@@ -45,6 +45,57 @@ class TestHBNBCommand(unittest.TestCase):
                 "** class doesn't exist **"
             )
 
+    def test_create_with_string_parameter(self):
+        """Test create with a quoted string parameter."""
+        with patch("console.storage.new") as new:
+            with patch("sys.stdout", new=StringIO()) as output:
+                self.console.do_create(
+                    'State name="New_York"'
+                )
+                instance = new.call_args[0][0]
+                self.assertEqual(instance.name, "New York")
+                self.assertTrue(output.getvalue().strip())
+
+    def test_create_with_integer_parameters(self):
+        """Test create with integer parameters."""
+        with patch("console.storage.new") as new:
+            with patch("sys.stdout", new=StringIO()) as output:
+                self.console.do_create(
+                    "Place number_rooms=4 number_bathrooms=2 "
+                    "max_guest=10 price_by_night=300"
+                )
+                instance = new.call_args[0][0]
+                self.assertEqual(instance.number_rooms, 4)
+                self.assertEqual(instance.number_bathrooms, 2)
+                self.assertEqual(instance.max_guest, 10)
+                self.assertEqual(instance.price_by_night, 300)
+                self.assertTrue(output.getvalue().strip())
+
+    def test_create_with_float_parameters(self):
+        """Test create with float parameters."""
+        with patch("console.storage.new") as new:
+            with patch("sys.stdout", new=StringIO()) as output:
+                self.console.do_create(
+                    "Place latitude=37.773972 longitude=-122.431297"
+                )
+                instance = new.call_args[0][0]
+                self.assertEqual(instance.latitude, 37.773972)
+                self.assertEqual(instance.longitude, -122.431297)
+                self.assertTrue(output.getvalue().strip())
+
+    def test_create_skips_invalid_parameters(self):
+        """Test create skips parameters that cannot be recognized."""
+        with patch("console.storage.new") as new:
+            with patch("sys.stdout", new=StringIO()) as output:
+                self.console.do_create(
+                    'State name="California" invalid=value '
+                    'empty= number_rooms=not_a_number'
+                )
+                instance = new.call_args[0][0]
+                self.assertEqual(instance.name, "California")
+                self.assertFalse(hasattr(instance, "invalid"))
+                self.assertTrue(output.getvalue().strip())
+
     def test_show_missing_class(self):
         """Test show without a class name."""
         with patch("sys.stdout", new=StringIO()) as output:

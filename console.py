@@ -42,8 +42,8 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """Create a new instance of a class."""
-        args = shlex.split(arg)
+        """Create a new instance of a class with parameters."""
+        args = shlex.split(arg, posix=False)
 
         if not args:
             print("** class name missing **")
@@ -56,6 +56,32 @@ class HBNBCommand(cmd.Cmd):
             return
 
         instance = self.classes[class_name]()
+
+        for parameter in args[1:]:
+            if "=" not in parameter:
+                continue
+
+            key, value = parameter.split("=", 1)
+
+            if not key or not value:
+                continue
+
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace("_", " ")
+            elif "." in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+
+            if hasattr(instance, key):
+                setattr(instance, key, value)
+
         instance.save()
         print(instance.id)
 
