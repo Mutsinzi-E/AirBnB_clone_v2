@@ -25,7 +25,9 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """Return the list of City objects linked to this State."""
+            from models.city import City
+
             return [
-                city for city in models.storage.all("City").values()
+                city for city in models.storage.all(City).values()
                 if city.state_id == self.id
             ]

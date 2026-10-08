@@ -39,20 +39,28 @@ class DBStorage:
         self.__engine = create_engine(
             "mysql+mysqldb://{}:{}@{}/{}".format(
                 mysql_user, mysql_pwd, mysql_host, mysql_db
-            )
+            ),
+            pool_pre_ping=True
         )
+
         if hbnb_env == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """Query objects from the current database session."""
         new_dict = {}
+
         for class_name, model_class in classes.items():
             if cls is None or cls is model_class or cls == class_name:
                 objects = self.__session.query(model_class).all()
+
                 for obj in objects:
-                    key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                    key = "{}.{}".format(
+                        obj.__class__.__name__,
+                        obj.id
+                    )
                     new_dict[key] = obj
+
         return new_dict
 
     def new(self, obj):
@@ -71,13 +79,15 @@ class DBStorage:
     def reload(self):
         """Reload data from the database."""
         Base.metadata.create_all(self.__engine)
+
         session_factory = sessionmaker(
             bind=self.__engine,
             expire_on_commit=False
         )
+
         Session = scoped_session(session_factory)
-        self.__session = Session
+        self.__session = Session()
 
     def close(self):
-        """Remove the current database session."""
-        self.__session.remove()
+        """Close the current database session."""
+        self.__session.close()
