@@ -22,7 +22,7 @@ class City(BaseModel, Base):
 
         places = relationship(
             "Place",
-            backref="city",
+            backref="cities",
             cascade="all, delete, delete-orphan"
         )
     else:
