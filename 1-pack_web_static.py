@@ -3,7 +3,7 @@
 
 from datetime import datetime
 from os import makedirs
-from os.path import getsize, isdir
+from os.path import isdir
 from fabric.api import local, settings
 
 
@@ -25,12 +25,10 @@ def do_pack():
                 "tar -czf {} web_static".format(archive_path)
             )
 
-        if result.failed:
+        if not result.succeeded:
             return None
 
-        print("web_static packed: {} -> {}Bytes".format(
-            archive_path, getsize(archive_path)
-        ))
+        print("web_static packed: {}".format(archive_path))
         return archive_path
 
     except (OSError, IOError):
