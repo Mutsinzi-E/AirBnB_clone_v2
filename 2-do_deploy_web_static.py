@@ -21,7 +21,7 @@ def do_deploy(archive_path):
     try:
         with settings(warn_only=True):
             result = run("mkdir -p {}".format(release_path))
-            if result.failed:
+            if not result.succeeded:
                 return False
 
             put(archive_path, "/tmp/")
@@ -31,11 +31,11 @@ def do_deploy(archive_path):
                     remote_archive, release_path
                 )
             )
-            if result.failed:
+            if not result.succeeded:
                 return False
 
             result = run("rm -f {}".format(remote_archive))
-            if result.failed:
+            if not result.succeeded:
                 return False
 
             result = run(
@@ -43,17 +43,17 @@ def do_deploy(archive_path):
                     release_path, release_path
                 )
             )
-            if result.failed:
+            if not result.succeeded:
                 return False
 
             result = run(
                 "rm -rf {}/web_static".format(release_path)
             )
-            if result.failed:
+            if not result.succeeded:
                 return False
 
             result = run("rm -rf /data/web_static/current")
-            if result.failed:
+            if not result.succeeded:
                 return False
 
             result = run(
@@ -61,7 +61,7 @@ def do_deploy(archive_path):
                     release_path
                 )
             )
-            if result.failed:
+            if not result.succeeded:
                 return False
 
         print("New version deployed!")
