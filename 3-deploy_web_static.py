@@ -2,7 +2,6 @@
 """Create and distribute an archive to web servers."""
 
 from fabric.api import env
-from os.path import exists
 
 
 env.hosts = ['<IP web-01>', '<IP web-02>']
@@ -14,7 +13,7 @@ def deploy():
     deploy_archive = __import__('2-do_deploy_web_static').do_deploy
 
     archive_path = pack()
-    if not archive_path or not exists(archive_path):
+    if not archive_path:
         return False
 
     return deploy_archive(archive_path)
